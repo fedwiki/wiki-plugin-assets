@@ -5,11 +5,12 @@ expand = (text)->
     .replace /</g, '&lt;'
     .replace />/g, '&gt;'
 
-link = (file) ->
-  """<a href="#{location.origin}/assets/#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
-
 fetch = ($item, item) ->
   $p = $item.find('p')
+  assets = item.text.match(/([\w\/-]*)/)[1]
+
+  link = (file) ->
+    """<a href="#{location.origin}/assets/#{assets}/#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
 
   render = (data) ->
     if data.error
@@ -25,6 +26,7 @@ fetch = ($item, item) ->
 
   $.ajax
       url: '/plugin/assets/list'
+      data: {assets}
       dataType: 'json'
       success: render
       error: trouble

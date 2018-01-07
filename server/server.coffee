@@ -8,7 +8,8 @@ startServer = (params) ->
   argv = params.argv
 
   app.get '/plugin/assets/list', (req, res) ->
-    fs.readdir argv.assets, (error, files) ->
+    path = "#{argv.assets}/#{req.query.assets}"
+    fs.readdir path, (error, files) ->
       return res.json {error} if error
       res.json {files}
 
