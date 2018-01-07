@@ -1,37 +1,57 @@
 {
   "title": "About Assets Plugin",
   "story": [
-  {
-    "type": "paragraph",
-    "id": "34fbbd15f3242ee9",
-    "text": "Here we describe the purpose of the plugin and include a sample."
-  },
-  {
-    "type": "assets",
-    "id": "f44483397c13de7b",
-    "text": "This is text in the new plugin. You can *double-click* to edit it too."
-  }
-],
-  "journal": [
-  {
-    "type": "create",
-    "item": {
-      "title": "About Assets Plugin",
-      "story": [
-  {
-    "type": "paragraph",
-    "id": "34fbbd15f3242ee9",
-    "text": "Here we describe the purpose of the plugin and include a sample."
-  },
-  {
-    "type": "assets",
-    "id": "f44483397c13de7b",
-    "text": "This is text in the new plugin. You can *double-click* to edit it too."
-  }
-]
+    {
+      "type": "paragraph",
+      "id": "34fbbd15f3242ee9",
+      "text": "Wiki can host and serve static files called assets. This plugin will list specified collections of assets and offer links to read each file."
     },
-    "date": 1515348349000,
-    "certificate": "from mkplugin.sh"
-  }
-]
+    {
+      "type": "assets",
+      "id": "f44483397c13de7b",
+      "text": "*"
+    }
+  ],
+  "journal": [
+    {
+      "type": "create",
+      "item": {
+        "title": "About Assets Plugin",
+        "story": [
+          {
+            "type": "paragraph",
+            "id": "34fbbd15f3242ee9",
+            "text": "Here we describe the purpose of the plugin and include a sample."
+          },
+          {
+            "type": "assets",
+            "id": "f44483397c13de7b",
+            "text": "This is text in the new plugin. You can *double-click* to edit it too."
+          }
+        ]
+      },
+      "date": 1515348349000,
+      "certificate": "from mkplugin.sh"
+    },
+    {
+      "type": "edit",
+      "id": "34fbbd15f3242ee9",
+      "item": {
+        "type": "paragraph",
+        "id": "34fbbd15f3242ee9",
+        "text": "Wiki can host and serve static files called assets. This plugin will list specified collections of assets and offer links to read each file."
+      },
+      "date": 1515351273628
+    },
+    {
+      "type": "edit",
+      "id": "f44483397c13de7b",
+      "item": {
+        "type": "assets",
+        "id": "f44483397c13de7b",
+        "text": "*"
+      },
+      "date": 1515351283931
+    }
+  ]
 }
