@@ -1,0 +1,37 @@
+{
+  "title": "About Assets Plugin",
+  "story": [
+  {
+    "type": "paragraph",
+    "id": "34fbbd15f3242ee9",
+    "text": "Here we describe the purpose of the plugin and include a sample."
+  },
+  {
+    "type": "assets",
+    "id": "f44483397c13de7b",
+    "text": "This is text in the new plugin. You can *double-click* to edit it too."
+  }
+],
+  "journal": [
+  {
+    "type": "create",
+    "item": {
+      "title": "About Assets Plugin",
+      "story": [
+  {
+    "type": "paragraph",
+    "id": "34fbbd15f3242ee9",
+    "text": "Here we describe the purpose of the plugin and include a sample."
+  },
+  {
+    "type": "assets",
+    "id": "f44483397c13de7b",
+    "text": "This is text in the new plugin. You can *double-click* to edit it too."
+  }
+]
+    },
+    "date": 1515348349000,
+    "certificate": "from mkplugin.sh"
+  }
+]
+}
