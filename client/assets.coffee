@@ -33,14 +33,33 @@ fetch = ($item, item) ->
 
 emit = ($item, item) ->
   $item.append """
-    <p style="background-color:#eee;padding:15px;">
-      fetching asset list
-    </p>
+    <div style="background-color:#eee;padding:15px;">
+      <p>fetching asset list</p>
+      <form id="uploadForm" enctype="multipart/form-data" method="post" name="uploadForm" novalidate>
+          <input type="file" name="userPhoto" id="userPhoto" />
+          <button>submit</button>
+      </form>
+    </div>
   """
   fetch $item, item
 
 bind = ($item, item) ->
   $item.dblclick -> wiki.textEditor $item, item
+
+  $item.find('button').click (e) ->
+    e.preventDefault()
+    console.log 'click'
+    form = new FormData($("#uploadForm")[0])
+    console.log 'form data', form
+    $.ajax
+      url: '/plugin/assets/upload'
+      method: "POST"
+      dataType: 'json'
+      data: form
+      processData: false
+      contentType: false
+      success: -> console.log('success')
+      error: -> console.log('error')
 
 window.plugins.assets = {emit, bind} if window?
 module.exports = {expand} if module?
