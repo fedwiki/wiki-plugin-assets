@@ -16,8 +16,8 @@ startServer = (params) ->
         done null, stats.isFile()
     fs.readdir path, (error, names) ->
       return res.json {error} if error
-      files = async.filter names, isFile
-      res.json {files}
+      async.filter names, isFile, (err, files) ->
+        res.json {files}
 
   app.get '/plugin/assets/:thing', (req, res) ->
     thing = req.params.thing
