@@ -33,14 +33,47 @@ fetch = ($item, item) ->
 
 emit = ($item, item) ->
   $item.append """
-    <p style="background-color:#eee;padding:15px;">
-      fetching asset list
-    </p>
+    <div style="background-color:#eee;padding:15px;">
+      <p>fetching asset list</p>
+      <center><button>upload</button></center>
+    </div>
+    <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
   """
   fetch $item, item
 
 bind = ($item, item) ->
+  assets = item.text.match(/([\w\/-]*)/)[1]
+
   $item.dblclick -> wiki.textEditor $item, item
+
+  # https://coligo.io/building-ajax-file-uploader-with-node/
+  $button = $item.find('button')
+  $input = $item.find('input')
+
+  $button.click (e) ->
+    $input.click()
+
+  $input.on 'change', (e) ->
+    files = $(this).get(0).files
+    console.log 'upload', files
+    unless files.length
+      return console.log 'cancel upload'
+    form = new FormData()
+    form.append 'assets', assets
+    for file in files
+      form.append 'uploads[]', file, file.name
+
+    $.ajax
+      url: '/plugin/assets/upload'
+      type: 'POST'
+      data: form
+      processData: false
+      contentType: false
+      success: ->
+        $item.empty()
+        emit $item, item
+        bind $item, item
+      error: -> console.log('upload error')
 
 window.plugins.assets = {emit, bind} if window?
 module.exports = {expand} if module?

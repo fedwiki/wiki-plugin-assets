@@ -3,6 +3,7 @@
 
 fs = require 'fs'
 async = require 'async'
+formidable = require 'formidable'
 
 startServer = (params) ->
   app = params.app
@@ -19,6 +20,21 @@ startServer = (params) ->
       return res.json {error} if error
       async.filter names, isFile, (error, files) ->
         return res.json {error, files}
+
+  app.post '/plugin/assets/upload', (req, res) ->
+    form = new (formidable.IncomingForm)
+    form.multiples = true
+    form.uploadDir = "#{argv.assets}"
+    form.on 'field', (name, value) ->
+      form.uploadDir = "#{argv.assets}/#{value}" if name == 'assets'
+    form.on 'file', (field, file) ->
+      fs.rename file.path, "#{form.uploadDir}/#{file.name}"
+    form.on 'error', (err) ->
+      console.log "upload error: #{err}"
+      res.status(500).send("upload error: #{err}")
+    form.on 'end', ->
+      res.end 'success'
+    form.parse req
 
   app.get '/plugin/assets/:thing', (req, res) ->
     thing = req.params.thing
