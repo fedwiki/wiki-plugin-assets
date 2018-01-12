@@ -2,9 +2,9 @@
 # These handlers are launched with the wiki server. 
 
 fs = require 'fs'
+async = require 'async'
 multer = require 'multer'
 upload = multer multer {dest: 'uploads/'}
-console.log 'upload', upload
 
 startServer = (params) ->
   app = params.app
@@ -12,9 +12,15 @@ startServer = (params) ->
 
   app.get '/plugin/assets/list', (req, res) ->
     path = "#{argv.assets}/#{req.query.assets}"
-    fs.readdir path, (error, files) ->
+    isFile = (name, done) ->
+      return done false if name.match /^\./
+      fs.stat "#{path}/#{name}", (error, stats) ->
+        return done error if error
+        return done null, stats.isFile()
+    fs.readdir path, (error, names) ->
       return res.json {error} if error
-      res.json {files}
+      async.filter names, isFile, (error, files) ->
+        return res.json {error, files}
 
   app.post '/plugin/assets/upload', upload.single('mumble'), (req, res) ->
     console.log(req.files);
