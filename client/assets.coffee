@@ -35,31 +35,45 @@ emit = ($item, item) ->
   $item.append """
     <div style="background-color:#eee;padding:15px;">
       <p>fetching asset list</p>
-      <form id="uploadForm" enctype="multipart/form-data" method="post" name="uploadForm" novalidate>
-          <input type="file" name="userPhoto" id="userPhoto" />
-          <button>submit</button>
-      </form>
+      <center><button>upload</button></center>
     </div>
+    <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
   """
   fetch $item, item
 
 bind = ($item, item) ->
+  assets = item.text.match(/([\w\/-]*)/)[1]
+
   $item.dblclick -> wiki.textEditor $item, item
 
-  $item.find('button').click (e) ->
-    e.preventDefault()
-    console.log 'click'
-    form = new FormData($("#uploadForm")[0])
-    console.log 'form data', form
+  # https://coligo.io/building-ajax-file-uploader-with-node/
+  $button = $item.find('button')
+  $input = $item.find('input')
+
+  $button.click (e) ->
+    $input.click()
+
+  $input.on 'change', (e) ->
+    files = $(this).get(0).files
+    console.log 'upload', files
+    unless files.length
+      return console.log 'cancel upload'
+    form = new FormData()
+    form.append 'assets', assets
+    for file in files
+      form.append 'uploads[]', file, file.name
+
     $.ajax
       url: '/plugin/assets/upload'
-      method: "POST"
-      dataType: 'json'
+      type: 'POST'
       data: form
       processData: false
       contentType: false
-      success: -> console.log('success')
-      error: -> console.log('error')
+      success: ->
+        $item.empty()
+        emit $item, item
+        bind $item, item
+      error: -> console.log('upload error')
 
 window.plugins.assets = {emit, bind} if window?
 module.exports = {expand} if module?

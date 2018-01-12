@@ -3,8 +3,7 @@
 
 fs = require 'fs'
 async = require 'async'
-multer = require 'multer'
-upload = multer multer {dest: 'uploads/'}
+formidable = require 'formidable'
 
 startServer = (params) ->
   app = params.app
@@ -22,16 +21,20 @@ startServer = (params) ->
       async.filter names, isFile, (error, files) ->
         return res.json {error, files}
 
-  app.post '/plugin/assets/upload', upload.single('mumble'), (req, res) ->
-    console.log(req.files);
-    files = req.files.file
-    if Array.isArray(files)
-      # response with multiple files (old form may send multiple files)
-      console.log 'Got ' + files.length + ' files'
-    else
-      # dropzone will send multiple requests per default
-      console.log 'Got one file'
-    res.sendStatus 200
+  app.post '/plugin/assets/upload', (req, res) ->
+    form = new (formidable.IncomingForm)
+    form.multiples = true
+    form.uploadDir = "#{argv.assets}"
+    form.on 'field', (name, value) ->
+      form.uploadDir = "#{argv.assets}/#{value}" if name == 'assets'
+    form.on 'file', (field, file) ->
+      fs.rename file.path, "#{form.uploadDir}/#{file.name}"
+    form.on 'error', (err) ->
+      console.log "upload error: #{err}"
+      res.status(500).send("upload error: #{err}")
+    form.on 'end', ->
+      res.end 'success'
+    form.parse req
 
   app.get '/plugin/assets/:thing', (req, res) ->
     thing = req.params.thing
