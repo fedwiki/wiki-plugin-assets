@@ -8,23 +8,26 @@ expand = (text)->
 fetch = ($item, item) ->
   $p = $item.find('p')
   assets = item.text.match(/([\w\/-]*)/)[1]
+  remote = $item.parents('.page').data('site')
+  site = if remote? then "//#{remote}" else ''
 
   link = (file) ->
-    """<a href="#{location.origin}/assets/#{assets}/#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
+    """<a href="#{site}/assets/#{assets}/#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
 
   render = (data) ->
     if data.error
-      return $p.text "server reports: #{data.error.code}"
+      return $p.text "no files" if data.error.code == 'ENOENT'
+      return $p.text "plugin reports: #{data.error.code}"
     files = data.files
     if files.length == 0
-      return $p.text "no files among these assets"
+      return $p.text "no files"
     $p.html (link file for file in files).join "<br>"
 
-  trouble = ->
-    $p.text "can't get asset list"
+  trouble = (e) ->
+    $p.text "plugin error: #{e.statusText} #{e.responseText||''}"
 
   $.ajax
-      url: '/plugin/assets/list'
+      url: "#{site}/plugin/assets/list"
       data: {assets}
       dataType: 'json'
       success: render

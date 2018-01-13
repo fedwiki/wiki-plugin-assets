@@ -6,12 +6,17 @@ mkdirp = require 'mkdirp'
 async = require 'async'
 formidable = require 'formidable'
 
+cors = (req, res, next) ->
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+
 startServer = (params) ->
   app = params.app
   argv = params.argv
 
-  app.get '/plugin/assets/list', (req, res) ->
-    path = "#{argv.assets}/#{req.query.assets}"
+  app.get '/plugin/assets/list', cors, (req, res) ->
+    assets = (req.query.assets||'').match(/([\w\/-]*)/)[1]
+    path = "#{argv.assets}/#{assets}"
     isFile = (name, done) ->
       return done false if name.match /^\./
       fs.stat "#{path}/#{name}", (error, stats) ->
@@ -31,7 +36,8 @@ startServer = (params) ->
     mkdirp.sync form.uploadDir
     form.on 'field', (name, value) ->
       return unless name == 'assets'
-      form.uploadDir = "#{argv.assets}/#{value}"
+      assets = (value||'').match(/([\w\/-]*)/)[1]
+      form.uploadDir = "#{argv.assets}/#{assets}"
       mkdirp.sync form.uploadDir
     form.on 'file', (field, file) ->
       fs.rename file.path, "#{form.uploadDir}/#{file.name}"
