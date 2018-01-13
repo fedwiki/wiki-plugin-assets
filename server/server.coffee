@@ -2,6 +2,7 @@
 # These handlers are launched with the wiki server. 
 
 fs = require 'fs'
+mkdirp = require 'mkdirp'
 async = require 'async'
 formidable = require 'formidable'
 
@@ -23,11 +24,15 @@ startServer = (params) ->
 
   app.post '/plugin/assets/upload', (req, res) ->
     return res.status(401).send("must login") unless req.session?.passport?.user || req.session?.email || req.session?.friend
+
     form = new (formidable.IncomingForm)
     form.multiples = true
     form.uploadDir = "#{argv.assets}"
+    mkdirp.sync form.uploadDir
     form.on 'field', (name, value) ->
-      form.uploadDir = "#{argv.assets}/#{value}" if name == 'assets'
+      return unless name == 'assets'
+      form.uploadDir = "#{argv.assets}/#{value}"
+      mkdirp.sync form.uploadDir
     form.on 'file', (field, file) ->
       fs.rename file.path, "#{form.uploadDir}/#{file.name}"
     form.on 'error', (err) ->
