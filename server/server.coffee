@@ -22,6 +22,7 @@ startServer = (params) ->
         return res.json {error, files}
 
   app.post '/plugin/assets/upload', (req, res) ->
+    return res.status(401).send("must login") unless req.session?.passport?.user || req.session?.email || req.session?.friend
     form = new (formidable.IncomingForm)
     form.multiples = true
     form.uploadDir = "#{argv.assets}"

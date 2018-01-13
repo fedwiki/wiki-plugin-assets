@@ -31,13 +31,19 @@ fetch = ($item, item) ->
       error: trouble
 
 emit = ($item, item) ->
+  uploader = ->
+    return '' if $item.parents('.page').hasClass 'remote'
+    """
+      <div style="background-color:#ddd;" class="progress-bar" role="progressbar"></div>
+      <center><button>upload</button></center>
+      <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
+    """
+
   $item.append """
     <div style="background-color:#eee;padding:15px;">
       <p>fetching asset list</p>
-      <div style="background-color:white;" class="progress-bar" role="progressbar"></div>
-      <center><button>upload</button></center>
+      #{uploader()}
     </div>
-    <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
   """
   fetch $item, item
 
@@ -79,8 +85,9 @@ bind = ($item, item) ->
         $item.empty()
         emit $item, item
         bind $item, item
-      error: ->
-        $progress.text 'upload error'
+      error: (e) ->
+        console.log 'error', e
+        $progress.text "upload error: #{e.statusText} #{e.responseText||''}"
         $progress.width '100%'
       xhr: ->
         xhr = new XMLHttpRequest
