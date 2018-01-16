@@ -6,7 +6,7 @@ expand = (text)->
     .replace />/g, '&gt;'
 
 fetch = ($item, item) ->
-  $p = $item.find('p')
+  $report = $item.find('span')
   assets = item.text.match(/([\w\/-]*)/)[1]
   remote = $item.parents('.page').data('site')
   site = if remote? then "//#{remote}" else ''
@@ -16,15 +16,15 @@ fetch = ($item, item) ->
 
   render = (data) ->
     if data.error
-      return $p.text "no files" if data.error.code == 'ENOENT'
-      return $p.text "plugin reports: #{data.error.code}"
+      return $report.text "no files" if data.error.code == 'ENOENT'
+      return $report.text "plugin reports: #{data.error.code}"
     files = data.files
     if files.length == 0
-      return $p.text "no files"
-    $p.html (link file for file in files).join "<br>"
+      return $report.text "no files"
+    $report.html (link file for file in files).join "<br>"
 
   trouble = (e) ->
-    $p.text "plugin error: #{e.statusText} #{e.responseText||''}"
+    $report.text "plugin error: #{e.statusText} #{e.responseText||''}"
 
   $.ajax
       url: "#{site}/plugin/assets/list"
@@ -44,7 +44,7 @@ emit = ($item, item) ->
 
   $item.append """
     <div style="background-color:#eee;padding:15px;">
-      <p>fetching asset list</p>
+      <span>fetching asset list</span>
       #{uploader()}
     </div>
   """
