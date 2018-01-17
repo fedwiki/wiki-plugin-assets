@@ -9,7 +9,10 @@ fetch = ($item, item) ->
   $p = $item.find('p')
   assets = item.text.match(/([\w\/-]*)/)[1]
   remote = $item.parents('.page').data('site')
-  site = if remote? then "//#{remote}" else ''
+  requestSite = if remote? then remote else null
+  site = if remote?
+    if wiki.site(requestSite).getURL('assets').startsWith('/proxy') then "http://#{remote}" else "//#{remote}"
+  else ''
 
   link = (file) ->
     """<a href="#{site}/assets/#{assets}/#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
@@ -27,11 +30,11 @@ fetch = ($item, item) ->
     $p.text "plugin error: #{e.statusText} #{e.responseText||''}"
 
   $.ajax
-      url: "#{site}/plugin/assets/list"
-      data: {assets}
-      dataType: 'json'
-      success: render
-      error: trouble
+    url: wiki.site(requestSite).getURL('plugin/assets/list')
+    data: {assets}
+    dataType: 'json'
+    success: render
+    error: trouble
 
 emit = ($item, item) ->
   uploader = ->
@@ -99,4 +102,3 @@ bind = ($item, item) ->
 
 window.plugins.assets = {emit, bind} if window?
 module.exports = {expand} if module?
-
