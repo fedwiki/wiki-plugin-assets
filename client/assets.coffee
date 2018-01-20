@@ -6,7 +6,7 @@ expand = (text)->
     .replace />/g, '&gt;'
 
 context = ($item) ->
-  sites = []
+  sites = [location.host]
   journal = $item.parents('.page').data('data').journal
   for action in journal.slice(0).reverse()
     if action.site? and not sites.includes(action.site)
@@ -50,15 +50,18 @@ emit = ($item, item) ->
 
   $item.append """
     <div style="background-color:#eee;padding:15px;">
-      <span>fetching asset list</span>
+      <dl style="margin:0;color:gray"></dl>
       #{uploader()}
     </div>
   """
-  context $item
-  $report = $item.find('span')
+
   assets = item.text.match(/([\w\/-]*)/)[1]
-  remote = $item.parents('.page').data('site')
-  fetch $report, assets, remote
+  for site in context $item
+    $report = $item.find('dl').prepend """
+      <dt><img width=12 src="//#{site}/favicon.png"> #{site}</dt>
+      <dd style="margin:8px;"></dd>
+    """
+    fetch $report.find('dd:first'), assets, site
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
