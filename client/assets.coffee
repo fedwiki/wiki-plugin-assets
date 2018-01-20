@@ -5,10 +5,16 @@ expand = (text)->
     .replace /</g, '&lt;'
     .replace />/g, '&gt;'
 
-fetch = ($item, item) ->
-  $p = $item.find('p')
-  assets = item.text.match(/([\w\/-]*)/)[1]
-  remote = $item.parents('.page').data('site')
+context = ($item) ->
+  sites = [location.host]
+  journal = $item.parents('.page').data('data').journal
+  for action in journal.slice(0).reverse()
+    if action.site? and not sites.includes(action.site)
+      sites.push action.site
+  console.log 'context', sites
+  sites
+
+fetch = ($report, assets, remote) ->
   site = if remote? then "//#{remote}" else ''
 
   link = (file) ->
@@ -16,15 +22,15 @@ fetch = ($item, item) ->
 
   render = (data) ->
     if data.error
-      return $p.text "no files" if data.error.code == 'ENOENT'
-      return $p.text "plugin reports: #{data.error.code}"
+      return $report.text "no files" if data.error.code == 'ENOENT'
+      return $report.text "plugin reports: #{data.error.code}"
     files = data.files
     if files.length == 0
-      return $p.text "no files"
-    $p.html (link file for file in files).join "<br>"
+      return $report.text "no files"
+    $report.html (link file for file in files).join "<br>"
 
   trouble = (e) ->
-    $p.text "plugin error: #{e.statusText} #{e.responseText||''}"
+    $report.text "plugin error: #{e.statusText} #{e.responseText||''}"
 
   $.ajax
       url: "#{site}/plugin/assets/list"
@@ -44,11 +50,18 @@ emit = ($item, item) ->
 
   $item.append """
     <div style="background-color:#eee;padding:15px;">
-      <p>fetching asset list</p>
+      <dl style="margin:0;color:gray"></dl>
       #{uploader()}
     </div>
   """
-  fetch $item, item
+
+  assets = item.text.match(/([\w\/-]*)/)[1]
+  for site in context $item
+    $report = $item.find('dl').prepend """
+      <dt><img width=12 src="//#{site}/favicon.png"> #{site}</dt>
+      <dd style="margin:8px;"></dd>
+    """
+    fetch $report.find('dd:first'), assets, site
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
