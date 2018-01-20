@@ -5,10 +5,16 @@ expand = (text)->
     .replace /</g, '&lt;'
     .replace />/g, '&gt;'
 
-fetch = ($item, item) ->
-  $report = $item.find('span')
-  assets = item.text.match(/([\w\/-]*)/)[1]
-  remote = $item.parents('.page').data('site')
+context = ($item) ->
+  sites = []
+  journal = $item.parents('.page').data('data').journal
+  for action in journal.slice(0).reverse()
+    if action.site? and not sites.includes(action.site)
+      sites.push action.site
+  console.log 'context', sites
+  sites
+
+fetch = ($report, assets, remote) ->
   site = if remote? then "//#{remote}" else ''
 
   link = (file) ->
@@ -48,7 +54,11 @@ emit = ($item, item) ->
       #{uploader()}
     </div>
   """
-  fetch $item, item
+  context $item
+  $report = $item.find('span')
+  assets = item.text.match(/([\w\/-]*)/)[1]
+  remote = $item.parents('.page').data('site')
+  fetch $report, assets, remote
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
