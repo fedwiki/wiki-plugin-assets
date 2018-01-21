@@ -7,11 +7,13 @@ expand = (text)->
 
 context = ($item) ->
   sites = [location.host]
+  if remote = $item.parents('.page').data('site')
+    unless remote == location.host
+      sites.push remote
   journal = $item.parents('.page').data('data').journal
   for action in journal.slice(0).reverse()
     if action.site? and not sites.includes(action.site)
       sites.push action.site
-  console.log 'context', sites
   sites
 
 fetch = ($report, assets, remote) ->
