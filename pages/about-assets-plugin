@@ -4,12 +4,27 @@
     {
       "type": "paragraph",
       "id": "34fbbd15f3242ee9",
-      "text": "Wiki can host and serve static files called assets. This plugin will list specified collections of assets and offer links to read each file."
+      "text": "Wiki can host and serve static files called assets. This plugin will list specified collections of assets and offer links to read each file. Uploads go to the origin site while lists include all sites where a page has been shared."
     },
     {
       "type": "assets",
       "id": "f44483397c13de7b",
       "text": "*"
+    },
+    {
+      "type": "paragraph",
+      "id": "e582f98e75c13272",
+      "text": "Markup the plugin with the path to the subdirectory where assets will be store once uploaded. The path need not exist though some paths are reserved for special purposes. See [[About Reserved Asset Paths]]"
+    },
+    {
+      "type": "paragraph",
+      "id": "0fdb11a6b4ef26cb",
+      "text": "The plugin will show the contents of one subdirectory. To see more subdirectories, make more plugins."
+    },
+    {
+      "type": "paragraph",
+      "id": "27dc9960e4b3fbb3",
+      "text": "Paths are restricted to alphanumeric names, including underscore, possibly hyphenated, separated by forward slashes. File names are slightly less restrictive."
     }
   ],
   "journal": [
@@ -52,6 +67,78 @@
         "text": "*"
       },
       "date": 1515351283931
+    },
+    {
+      "type": "edit",
+      "id": "34fbbd15f3242ee9",
+      "item": {
+        "type": "paragraph",
+        "id": "34fbbd15f3242ee9",
+        "text": "Wiki can host and serve static files called assets. This plugin will list specified collections of assets and offer links to read each file. Uploads go to the origin site while lists include all sites where a page has been shared."
+      },
+      "date": 1516580682163
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "e582f98e75c13272"
+      },
+      "id": "e582f98e75c13272",
+      "type": "add",
+      "after": "f44483397c13de7b",
+      "date": 1516580821536
+    },
+    {
+      "type": "edit",
+      "id": "e582f98e75c13272",
+      "item": {
+        "type": "paragraph",
+        "id": "e582f98e75c13272",
+        "text": "Markup the plugin with the path to the subdirectory where assets will be store once uploaded. The path need not exist though some paths are reserved for special purposes. See [[About Reserved Asset Paths]]"
+      },
+      "date": 1516581051303
+    },
+    {
+      "type": "add",
+      "id": "0fdb11a6b4ef26cb",
+      "item": {
+        "type": "paragraph",
+        "id": "0fdb11a6b4ef26cb",
+        "text": "The plugin will show the contents of one subdirectory. To see more subdirectories, make more plugins."
+      },
+      "after": "e582f98e75c13272",
+      "date": 1516581190604
+    },
+    {
+      "type": "add",
+      "id": "27dc9960e4b3fbb3",
+      "item": {
+        "type": "paragraph",
+        "id": "27dc9960e4b3fbb3",
+        "text": "Paths are restricted to alphanumeric names, possibly hyphenated, separated by forward slashes."
+      },
+      "after": "0fdb11a6b4ef26cb",
+      "date": 1516581251673
+    },
+    {
+      "type": "edit",
+      "id": "27dc9960e4b3fbb3",
+      "item": {
+        "type": "paragraph",
+        "id": "27dc9960e4b3fbb3",
+        "text": "Paths are restricted to alphanumeric names, including underscore, possibly hyphenated, separated by forward slashes."
+      },
+      "date": 1516581379637
+    },
+    {
+      "type": "edit",
+      "id": "27dc9960e4b3fbb3",
+      "item": {
+        "type": "paragraph",
+        "id": "27dc9960e4b3fbb3",
+        "text": "Paths are restricted to alphanumeric names, including underscore, possibly hyphenated, separated by forward slashes. File names are slightly less restrictive."
+      },
+      "date": 1516581462803
     }
   ]
 }
