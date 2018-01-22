@@ -1,0 +1,260 @@
+{
+  "title": "About Reserved Asset Paths",
+  "story": [
+    {
+      "type": "paragraph",
+      "id": "17bdf2c74f130bc7",
+      "text": "We recommend assets be stored in assets subdirectories that are unlikely to collide with other uses. We recommend some path name conventions and list some paths already reserved for specific usage."
+    },
+    {
+      "type": "markdown",
+      "id": "11d1d01f26ea7e9c",
+      "text": "# Conventions"
+    },
+    {
+      "type": "paragraph",
+      "id": "82563d09c84d9145",
+      "text": "We recommend creating a new page to hold the Assets plugin for each new collection. Configure this plugin to store and share assets from a subdirectory of 'pages' named by the page title's slug as it often appears in the location bar."
+    },
+    {
+      "type": "paragraph",
+      "id": "63fc43d7d4d54da1",
+      "text": "If this page were to describe a collection of assets, we would configure the Assets plugin with 'pages' and 'about-reserved-asset-paths'."
+    },
+    {
+      "type": "code",
+      "id": "39e7dbc08290fba7",
+      "text": "pages/about-reserved-asset-paths"
+    },
+    {
+      "type": "markdown",
+      "id": "10266fc136b331bb",
+      "text": "# Reservations"
+    },
+    {
+      "type": "paragraph",
+      "id": "c929d6f28fb4c3cc",
+      "text": "The wiki-server reserves 'home' for assets related to a customized home page."
+    },
+    {
+      "type": "code",
+      "id": "225c4a490cbeca08",
+      "text": "home"
+    },
+    {
+      "type": "paragraph",
+      "id": "f6b4bc6f53c92312",
+      "text": "Wiki plugins reserve paths constructed from 'plugins' and the plugin type name in lower case. For example, the Image plugin might manage large image assets in 'plugins/image' where it would follow its own rules to avoid collisions."
+    },
+    {
+      "type": "code",
+      "id": "c93a5928308bf9c7",
+      "text": "plugins/image"
+    }
+  ],
+  "journal": [
+    {
+      "type": "create",
+      "item": {
+        "title": "About Reserved Asset Paths",
+        "story": []
+      },
+      "date": 1516581529138
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "17bdf2c74f130bc7"
+      },
+      "id": "17bdf2c74f130bc7",
+      "type": "add",
+      "date": 1516581536677
+    },
+    {
+      "type": "edit",
+      "id": "17bdf2c74f130bc7",
+      "item": {
+        "type": "paragraph",
+        "id": "17bdf2c74f130bc7",
+        "text": "We recommend assets be stored in assets subdirectories that are unlikely to collide with other uses. We recommend some path name conventions and list some paths already reserved for specific usage."
+      },
+      "date": 1516581726653
+    },
+    {
+      "type": "add",
+      "id": "11d1d01f26ea7e9c",
+      "item": {
+        "type": "paragraph",
+        "id": "11d1d01f26ea7e9c",
+        "text": "# Conventions"
+      },
+      "after": "17bdf2c74f130bc7",
+      "date": 1516581743292
+    },
+    {
+      "type": "add",
+      "id": "82563d09c84d9145",
+      "item": {
+        "type": "paragraph",
+        "id": "82563d09c84d9145",
+        "text": "We recommend creating a new page to hold the Assets plugin for each new collection. Configure this plugin to store and share assets from a subdirectory of 'pages' named by the page title's slug as it often appears in the location bar."
+      },
+      "after": "11d1d01f26ea7e9c",
+      "date": 1516582316337
+    },
+    {
+      "type": "add",
+      "id": "63fc43d7d4d54da1",
+      "item": {
+        "type": "paragraph",
+        "id": "63fc43d7d4d54da1",
+        "text": "If this page were to describe a collection of assets, we would configure the Assets plugin with 'page' and 'about-reserved-asset-paths'."
+      },
+      "after": "82563d09c84d9145",
+      "date": 1516582418080
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "39e7dbc08290fba7"
+      },
+      "id": "39e7dbc08290fba7",
+      "type": "add",
+      "after": "63fc43d7d4d54da1",
+      "date": 1516582421867
+    },
+    {
+      "type": "edit",
+      "id": "39e7dbc08290fba7",
+      "item": {
+        "type": "code",
+        "id": "39e7dbc08290fba7",
+        "text": "pages/about-reserved-asset-paths"
+      },
+      "date": 1516582446248
+    },
+    {
+      "type": "edit",
+      "id": "63fc43d7d4d54da1",
+      "item": {
+        "type": "paragraph",
+        "id": "63fc43d7d4d54da1",
+        "text": "If this page were to describe a collection of assets, we would configure the Assets plugin with 'pages' and 'about-reserved-asset-paths'."
+      },
+      "date": 1516582453104
+    },
+    {
+      "type": "edit",
+      "id": "11d1d01f26ea7e9c",
+      "item": {
+        "type": "markdown",
+        "id": "11d1d01f26ea7e9c",
+        "text": "# Conventions"
+      },
+      "date": 1516582464369
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "10266fc136b331bb"
+      },
+      "id": "10266fc136b331bb",
+      "type": "add",
+      "after": "39e7dbc08290fba7",
+      "date": 1516582491420
+    },
+    {
+      "type": "edit",
+      "id": "10266fc136b331bb",
+      "item": {
+        "type": "paragraph",
+        "id": "10266fc136b331bb",
+        "text": "# Reservations"
+      },
+      "date": 1516582508382
+    },
+    {
+      "type": "add",
+      "id": "c929d6f28fb4c3cc",
+      "item": {
+        "type": "paragraph",
+        "id": "c929d6f28fb4c3cc",
+        "text": "The server reserves 'home' for assets related to a customized home page."
+      },
+      "after": "10266fc136b331bb",
+      "date": 1516582598817
+    },
+    {
+      "type": "edit",
+      "id": "c929d6f28fb4c3cc",
+      "item": {
+        "type": "paragraph",
+        "id": "c929d6f28fb4c3cc",
+        "text": "The wiki-server reserves 'home' for assets related to a customized home page."
+      },
+      "date": 1516582616699
+    },
+    {
+      "type": "add",
+      "id": "f6b4bc6f53c92312",
+      "item": {
+        "type": "paragraph",
+        "id": "f6b4bc6f53c92312",
+        "text": "Wiki plugins reserve paths constructed from 'plugins' and the plugin type name in lower case. For example, the Image plugin might manage large image assets in 'plugins/image' where it would follow its own rules to avoid collisions."
+      },
+      "after": "c929d6f28fb4c3cc",
+      "date": 1516582835619
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "c93a5928308bf9c7"
+      },
+      "id": "c93a5928308bf9c7",
+      "type": "add",
+      "after": "f6b4bc6f53c92312",
+      "date": 1516582841820
+    },
+    {
+      "type": "edit",
+      "id": "c93a5928308bf9c7",
+      "item": {
+        "type": "code",
+        "id": "c93a5928308bf9c7",
+        "text": "plugins/image"
+      },
+      "date": 1516582850341
+    },
+    {
+      "type": "add",
+      "id": "225c4a490cbeca08",
+      "item": {
+        "type": "factory",
+        "id": "225c4a490cbeca08",
+        "text": "home "
+      },
+      "after": "c929d6f28fb4c3cc",
+      "date": 1516582872193
+    },
+    {
+      "type": "edit",
+      "id": "225c4a490cbeca08",
+      "item": {
+        "type": "code",
+        "id": "225c4a490cbeca08",
+        "text": "home"
+      },
+      "date": 1516582879389
+    },
+    {
+      "type": "edit",
+      "id": "10266fc136b331bb",
+      "item": {
+        "type": "markdown",
+        "id": "10266fc136b331bb",
+        "text": "# Reservations"
+      },
+      "date": 1516582889415
+    }
+  ]
+}
