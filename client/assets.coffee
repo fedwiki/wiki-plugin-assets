@@ -5,10 +5,18 @@ expand = (text)->
     .replace /</g, '&lt;'
     .replace />/g, '&gt;'
 
-fetch = ($item, item) ->
-  $report = $item.find('span')
-  assets = item.text.match(/([\w\/-]*)/)[1]
-  remote = $item.parents('.page').data('site')
+context = ($item) ->
+  sites = [location.host]
+  if remote = $item.parents('.page').data('site')
+    unless remote == location.host
+      sites.push remote
+  journal = $item.parents('.page').data('data').journal
+  for action in journal.slice(0).reverse()
+    if action.site? and not sites.includes(action.site)
+      sites.push action.site
+  sites
+
+fetch = ($report, assets, remote) ->
   requestSite = if remote? then remote else null
   site = if remote?
     if wiki.site(requestSite).getURL('assets').startsWith('/proxy') then "http://#{remote}" else "//#{remote}"
@@ -47,11 +55,18 @@ emit = ($item, item) ->
 
   $item.append """
     <div style="background-color:#eee;padding:15px;">
-      <span>fetching asset list</span>
+      <dl style="margin:0;color:gray"></dl>
       #{uploader()}
     </div>
   """
-  fetch $item, item
+
+  assets = item.text.match(/([\w\/-]*)/)[1]
+  for site in context $item
+    $report = $item.find('dl').prepend """
+      <dt><img width=12 src="//#{site}/favicon.png"> #{site}</dt>
+      <dd style="margin:8px;"></dd>
+    """
+    fetch $report.find('dd:first'), assets, site
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
