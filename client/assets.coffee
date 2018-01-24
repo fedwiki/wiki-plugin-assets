@@ -63,7 +63,7 @@ emit = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
   for site in context $item
     $report = $item.find('dl').prepend """
-      <dt><img width=12 src="//#{site}/favicon.png"> #{site}</dt>
+      <dt><img width=12 src="#{wiki.site(site).flag()}"> #{site}</dt>
       <dd style="margin:8px;"></dd>
     """
     fetch $report.find('dd:first'), assets, site
