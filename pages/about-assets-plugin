@@ -25,6 +25,11 @@
       "type": "paragraph",
       "id": "27dc9960e4b3fbb3",
       "text": "Paths are restricted to alphanumeric names, including underscore, possibly hyphenated, separated by forward slashes. File names are slightly less restrictive."
+    },
+    {
+      "type": "paragraph",
+      "id": "677f2397847a8b90",
+      "text": "The plugin will offer an upload button when logged into the origin. Click this to select files to be uploaded or drag files (but not yet directories) to the asset list to initiate upload."
     }
   ],
   "journal": [
@@ -139,6 +144,27 @@
         "text": "Paths are restricted to alphanumeric names, including underscore, possibly hyphenated, separated by forward slashes. File names are slightly less restrictive."
       },
       "date": 1516581462803
+    },
+    {
+      "type": "add",
+      "id": "677f2397847a8b90",
+      "item": {
+        "type": "paragraph",
+        "id": "677f2397847a8b90",
+        "text": "The plugin will offer an upload button when logged into the origin. Click this to select files to be uploaded or drag files (but not yet directories) to the asset list to initiate an upload."
+      },
+      "after": "27dc9960e4b3fbb3",
+      "date": 1517758350838
+    },
+    {
+      "type": "edit",
+      "id": "677f2397847a8b90",
+      "item": {
+        "type": "paragraph",
+        "id": "677f2397847a8b90",
+        "text": "The plugin will offer an upload button when logged into the origin. Click this to select files to be uploaded or drag files (but not yet directories) to the asset list to initiate upload."
+      },
+      "date": 1517758360043
     }
   ]
 }

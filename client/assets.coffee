@@ -75,6 +75,10 @@ bind = ($item, item) ->
   $input = $item.find 'input'
   $progress = $item.find '.progress-bar'
 
+  ignore = (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+
   tick = (e) ->
     return unless e.lengthComputable
     percentComplete = e.loaded / e.total
@@ -86,8 +90,16 @@ bind = ($item, item) ->
     $input.click()
 
   $input.on 'change', (e) ->
-    files = $(this).get(0).files
-    return unless files.length
+    upload $(this).get(0).files
+
+  $item.on 'dragover', ignore
+  $item.on 'dragenter', ignore
+  $item.on 'drop', (e) ->
+    ignore e
+    upload e.originalEvent.dataTransfer?.files
+
+  upload = (files) ->
+    return unless files?.length
     form = new FormData()
     form.append 'assets', assets
     for file in files
