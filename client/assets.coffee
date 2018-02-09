@@ -18,16 +18,13 @@ context = ($item) ->
 
 fetch = ($report, assets, remote) ->
   requestSite = if remote? then remote else null
-  assetsURL = wiki.site(requestSite).getURL('assets')
+  assetsURL = wiki.site(requestSite).getDirectURL('assets')
   if assetsURL is ''
     $report.text "site not currently reachable."
     return
-  site = if remote?
-    if assetsURL.startsWith('/proxy') then "http://#{remote}" else "//#{remote}"
-  else ''
 
   link = (file) ->
-    """<a href="#{site}/assets/#{assets}/#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
+    """<a href="#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
 
   render = (data) ->
     if data.error
