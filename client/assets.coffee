@@ -17,10 +17,14 @@ context = ($item) ->
   sites
 
 fetch = ($report, assets, remote) ->
-  site = if remote? then "//#{remote}" else ''
+  requestSite = if remote? then remote else null
+  assetsURL = wiki.site(requestSite).getDirectURL('assets')
+  if assetsURL is ''
+    $report.text "site not currently reachable."
+    return
 
   link = (file) ->
-    """<a href="#{site}/assets/#{assets}/#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
+    """<a href="#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
 
   render = (data) ->
     if data.error
@@ -35,11 +39,11 @@ fetch = ($report, assets, remote) ->
     $report.text "plugin error: #{e.statusText} #{e.responseText||''}"
 
   $.ajax
-      url: "#{site}/plugin/assets/list"
-      data: {assets}
-      dataType: 'json'
-      success: render
-      error: trouble
+    url: wiki.site(requestSite).getURL('plugin/assets/list')
+    data: {assets}
+    dataType: 'json'
+    success: render
+    error: trouble
 
 emit = ($item, item) ->
   uploader = ->
@@ -60,7 +64,7 @@ emit = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
   for site in context $item
     $report = $item.find('dl').prepend """
-      <dt><img width=12 src="//#{site}/favicon.png"> #{site}</dt>
+      <dt><img width=12 src="#{wiki.site(site).flag()}"> #{site}</dt>
       <dd style="margin:8px;"></dd>
     """
     fetch $report.find('dd:first'), assets, site
@@ -126,4 +130,3 @@ bind = ($item, item) ->
 
 window.plugins.assets = {emit, bind} if window?
 module.exports = {expand} if module?
-
