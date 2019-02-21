@@ -40,7 +40,8 @@ startServer = (params) ->
       form.uploadDir = "#{argv.assets}/#{assets}"
       mkdirp.sync form.uploadDir
     form.on 'file', (field, file) ->
-      fs.rename file.path, "#{form.uploadDir}/#{file.name}"
+      fs.rename file.path, "#{form.uploadDir}/#{file.name}", (err) ->
+        return res.status(500).send("rename error: #{err}") if err
     form.on 'error', (err) ->
       console.log "upload error: #{err}"
       res.status(500).send("upload error: #{err}")
