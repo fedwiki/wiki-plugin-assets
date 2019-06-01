@@ -55,7 +55,7 @@ emit = ($item, item) ->
     """
 
   $item.append """
-    <div style="background-color:#eee;padding:15px;">
+    <div style="background-color:#eee;padding:15px; margin-block-start:1em; margin-block-end:1em;">
       <dl style="margin:0;color:gray"></dl>
       #{uploader()}
     </div>
