@@ -50,7 +50,8 @@ emit = ($item, item) ->
     return '' if $item.parents('.page').hasClass 'remote'
     """
       <div style="background-color:#ddd;" class="progress-bar" role="progressbar"></div>
-      <center><button>upload</button></center>
+      <center><button class="upload">upload</button></center>
+      <center><button class="copy">copy</button></center>
       <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
     """
 
@@ -75,7 +76,8 @@ bind = ($item, item) ->
   $item.dblclick -> wiki.textEditor $item, item
 
   # https://coligo.io/building-ajax-file-uploader-with-node/
-  $button = $item.find 'button'
+  $button = $item.find '.upload'
+  $copy = $item.find '.copy'
   $input = $item.find 'input'
   $progress = $item.find '.progress-bar'
 
@@ -92,6 +94,46 @@ bind = ($item, item) ->
 
   $button.click (e) ->
     $input.click()
+
+  $copy.click (e) ->
+    console.log('clicked the copy button!')
+    # Find fully qualified url
+    $.ajax
+      url: '//scad.fed.wiki/assets/pages/candle-tilt/IMG_3804.JPG'
+      type: 'GET'
+      success: (data, status, xhr) ->
+        console.log(xhr)
+        # data in the array seems to get to server, but it is the wrong type
+        file = new File(
+          [data],
+          'IMG_3804.JPG',
+          { type: xhr.getResponseHeader('Content-Type') }
+        )
+
+        form = new FormData()
+        form.append 'assets', assets
+        form.append 'uploads[]', file, file.name
+
+        $.ajax
+          url: '/plugin/assets/upload'
+          type: 'POST'
+          data: form
+          processData: false
+          contentType: false
+          success: ->
+            $item.empty()
+            # plugin refresh
+            emit $item, item
+            bind $item, item
+          error: (e) ->
+            console.log 'error', e
+            $progress.text "upload error: #{e.statusText} #{e.responseText||''}"
+            $progress.width '100%'
+          xhr: ->
+            xhr = new XMLHttpRequest
+            xhr.upload.addEventListener 'progress', tick, false
+            xhr
+     
 
   $input.on 'change', (e) ->
     upload $(this).get(0).files
