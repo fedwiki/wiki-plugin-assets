@@ -24,7 +24,10 @@ fetch = ($report, assets, remote) ->
     return
 
   link = (file) ->
-    """<a href="#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
+    href = "#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}"
+    # todo: no action if not logged on
+    act = if remote? and remote != location.host then '<button class="copy">⚑</button>' else ''
+    """<span>#{act} <a href="#{href}" target=_blank>#{expand file}</a></span>"""
 
   render = (data) ->
     if data.error
@@ -34,6 +37,9 @@ fetch = ($report, assets, remote) ->
     if files.length == 0
       return $report.text "no files"
     $report.html (link file for file in files).join "<br>"
+    $report.find('button.copy').click (e) ->
+      href = $(e.target).parent().find('a').attr('href')
+      console.log('copy',href)
 
   trouble = (e) ->
     $report.text "plugin error: #{e.statusText} #{e.responseText||''}"
@@ -51,7 +57,6 @@ emit = ($item, item) ->
     """
       <div style="background-color:#ddd;" class="progress-bar" role="progressbar"></div>
       <center><button class="upload">upload</button></center>
-      <center><button class="copy">copy</button></center>
       <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
     """
 
@@ -77,7 +82,6 @@ bind = ($item, item) ->
 
   # https://coligo.io/building-ajax-file-uploader-with-node/
   $button = $item.find '.upload'
-  $copy = $item.find '.copy'
   $input = $item.find 'input'
   $progress = $item.find '.progress-bar'
 
@@ -95,7 +99,7 @@ bind = ($item, item) ->
   $button.click (e) ->
     $input.click()
 
-  $copy.click (e) ->
+  $item.find('button.copy').click (e) ->
     console.log('clicked the copy button!')
     # Find fully qualified url
     $.ajax
