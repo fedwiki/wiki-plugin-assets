@@ -26,7 +26,10 @@ fetch = ($report, assets, remote) ->
   link = (file) ->
     href = "#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}"
     # todo: no action if not logged on
-    act = if remote? and remote != location.host then '<button class="copy">⚑</button>' else ''
+    act = if remote != location.host
+      '<button class="copy">⚑</button>'
+    else
+      '<button class="delete">✕</button>'
     """<span>#{act} <a href="#{href}" target=_blank>#{expand file}</a></span>"""
 
   render = (data) ->
@@ -40,6 +43,9 @@ fetch = ($report, assets, remote) ->
     $report.find('button.copy').click (e) ->
       href = $(e.target).parent().find('a').attr('href')
       console.log('copy',href)
+    $report.find('button.delete').click (e) ->
+      href = $(e.target).parent().find('a').attr('href')
+      console.log('delete',href)
 
   trouble = (e) ->
     $report.text "plugin error: #{e.statusText} #{e.responseText||''}"
