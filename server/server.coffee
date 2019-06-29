@@ -49,8 +49,11 @@ startServer = (params) ->
       res.end 'success'
     form.parse req
 
-  app.get '/plugin/assets/:thing', (req, res) ->
-    thing = req.params.thing
-    res.json {thing}
+  app.delete '/plugin/assets/', (req, res) ->
+    return res.status(401).send("must login") unless req.session?.passport?.user || req.session?.email || req.session?.friend
+    file = req.params.file
+    console.log('delete file', file)
+    res.status(500).send("unfinished")
+
 
 module.exports = {startServer}
