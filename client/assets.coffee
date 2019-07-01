@@ -38,7 +38,6 @@ post_upload = ($item, item, form) ->
     contentType: false
     success: ->
       $item.empty()
-      # plugin refresh
       emit $item, item
       bind $item, item
     error: (e) ->
@@ -72,7 +71,18 @@ get_file = ($item, item, url, success) ->
 
 delete_file = ($item, item, url) ->
   file = url.split('/').reverse()[0]
-  console.log 'delete', file
+  assets = item.text
+  $.ajax
+    url: "/plugin/assets/delete?file=#{file}&assets=#{assets}"
+    type: 'POST'
+    success: () ->
+      $item.empty()
+      emit $item, item
+      bind $item, item
+    error: (e) ->
+      $progress = $item.find '.progress-bar'
+      $progress.text "Delete error: #{e.statusText} #{e.responseText||''}"
+      $progress.width '100%'
 
 fetch = ($item, item, $report, assets, remote) ->
   requestSite = if remote? then remote else null
