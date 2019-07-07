@@ -56,7 +56,8 @@ get_file = ($item, item, url, success) ->
       url: url
       type: 'GET'
       success: (data, status, xhr) ->
-        console.log(xhr)
+        length = data.length
+        console.log({status, length, data, xhr})
         # data in the array seems to get to server, but it is the wrong type
         file = new File(
           [data],
