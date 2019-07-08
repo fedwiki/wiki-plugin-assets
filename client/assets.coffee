@@ -97,11 +97,14 @@ fetch_list = ($item, item, $report, assets, remote) ->
   link = (file) ->
     href = "#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}"
     # todo: no action if not logged on
-    act = if remote != location.host
-      '<button class="copy">⚑</button>'
+    act = unless isOwner
+      ''
+    else if remote != location.host
+      '<button class="copy">⚑</button> '
     else
-      '<button class="delete">✕</button>'
-    """<span>#{act} <a href="#{href}" target=_blank>#{expand file}</a></span>"""
+      '<button class="delete">✕</button> '
+    
+    """<span>#{act}<a href="#{href}" target=_blank>#{expand file}</a></span>"""
 
   render = (data) ->
     if data.error
