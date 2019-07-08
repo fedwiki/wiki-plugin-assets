@@ -50,25 +50,27 @@ post_upload = ($item, item, form) ->
       xhr
 
 get_file = ($item, item, url, success) ->
-    assets = item.text.match(/([\w\/-]*)/)[1]
-    filename = url.split('/').reverse()[0]
-    $.ajax
-      url: url
-      type: 'GET'
-      success: (data, status, xhr) ->
-        length = data.length
-        console.log({status, length, data, xhr})
-        # data in the array seems to get to server, but it is the wrong type
-        file = new File(
-          [data],
-          filename,
-          { type: xhr.getResponseHeader('Content-Type') }
-        )
+  assets = item.text.match(/([\w\/-]*)/)[1]
+  filename = url.split('/').reverse()[0]
+  fetch(url).then((response) ->
+    response.blob()
+  ).then((blob) ->
+    file = new File(
+      [blob],
+      filename,
+      { type: blob.type }
+    )
 
-        form = new FormData()
-        form.append 'assets', assets
-        form.append 'uploads[]', file, file.name
-        success form
+    form = new FormData()
+    form.append 'assets', assets
+    form.append 'uploads[]', file, file.name
+    success form
+  ).catch((e) ->
+    $progress = $item.find '.progress-bar'
+    $progress.text "Copy error: #{e.message}"
+    $progress.width '100%'
+  )
+
 
 delete_file = ($item, item, url) ->
   file = url.split('/').reverse()[0]
@@ -85,7 +87,7 @@ delete_file = ($item, item, url) ->
       $progress.text "Delete error: #{e.statusText} #{e.responseText||''}"
       $progress.width '100%'
 
-fetch = ($item, item, $report, assets, remote) ->
+fetch_list = ($item, item, $report, assets, remote) ->
   requestSite = if remote? then remote else null
   assetsURL = wiki.site(requestSite).getDirectURL('assets')
   if assetsURL is ''
@@ -151,7 +153,7 @@ emit = ($item, item) ->
       <dt><img width=12 src="#{wiki.site(site).flag()}"> #{site}</dt>
       <dd style="margin:8px;"></dd>
     """
-    fetch $item, item, $report.find('dd:first'), assets, site
+    fetch_list $item, item, $report.find('dd:first'), assets, site
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
