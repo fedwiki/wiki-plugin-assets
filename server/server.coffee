@@ -2,6 +2,7 @@
 # These handlers are launched with the wiki server. 
 
 fs = require 'fs'
+{ basename } = require 'path'
 mkdirp = require 'mkdirp'
 async = require 'async'
 formidable = require 'formidable'
@@ -49,8 +50,13 @@ startServer = (params) ->
       res.end 'success'
     form.parse req
 
-  app.get '/plugin/assets/:thing', (req, res) ->
-    thing = req.params.thing
-    res.json {thing}
+  app.post '/plugin/assets/delete', (req, res) ->
+    return res.status(401).send("must login") unless req.session?.passport?.user || req.session?.email || req.session?.friend
+    file = basename(req.query.file||'')
+    assets = (req.query.assets||'').match(/([\w\/-]*)/)[1]
+    toRemove = "#{argv.assets}/#{assets}/#{file}"
+    fs.unlink toRemove, (err) ->
+      return res.status(500).send(err.message) if err
+      res.status(200).send('ok')
 
 module.exports = {startServer}

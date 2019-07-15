@@ -5,6 +5,10 @@ expand = (text)->
     .replace /</g, '&lt;'
     .replace />/g, '&gt;'
 
+ignore = (e) ->
+  e.preventDefault()
+  e.stopPropagation()
+
 context = ($item) ->
   sites = [location.host]
   if remote = $item.parents('.page').data('site')
@@ -16,7 +20,74 @@ context = ($item) ->
       sites.push action.site
   sites
 
-fetch = ($report, assets, remote) ->
+post_upload = ($item, item, form) ->
+  $progress = $item.find '.progress-bar'
+
+  tick = (e) ->
+    return unless e.lengthComputable
+    percentComplete = e.loaded / e.total
+    percentComplete = parseInt(percentComplete * 100)
+    $progress.text "#{percentComplete}%"
+    $progress.width "#{percentComplete}%"
+
+  $.ajax
+    url: '/plugin/assets/upload'
+    type: 'POST'
+    data: form
+    processData: false
+    contentType: false
+    success: ->
+      $item.empty()
+      emit $item, item
+      bind $item, item
+    error: (e) ->
+      console.log 'error', e
+      $progress.text "upload error: #{e.statusText} #{e.responseText||''}"
+      $progress.width '100%'
+    xhr: ->
+      xhr = new XMLHttpRequest
+      xhr.upload.addEventListener 'progress', tick, false
+      xhr
+
+get_file = ($item, item, url, success) ->
+  assets = item.text.match(/([\w\/-]*)/)[1]
+  filename = url.split('/').reverse()[0]
+  fetch(url).then((response) ->
+    response.blob()
+  ).then((blob) ->
+    file = new File(
+      [blob],
+      filename,
+      { type: blob.type }
+    )
+
+    form = new FormData()
+    form.append 'assets', assets
+    form.append 'uploads[]', file, file.name
+    success form
+  ).catch((e) ->
+    $progress = $item.find '.progress-bar'
+    $progress.text "Copy error: #{e.message}"
+    $progress.width '100%'
+  )
+
+
+delete_file = ($item, item, url) ->
+  file = url.split('/').reverse()[0]
+  assets = item.text
+  $.ajax
+    url: "/plugin/assets/delete?file=#{file}&assets=#{assets}"
+    type: 'POST'
+    success: () ->
+      $item.empty()
+      emit $item, item
+      bind $item, item
+    error: (e) ->
+      $progress = $item.find '.progress-bar'
+      $progress.text "Delete error: #{e.statusText} #{e.responseText||''}"
+      $progress.width '100%'
+
+fetch_list = ($item, item, $report, assets, remote) ->
   requestSite = if remote? then remote else null
   assetsURL = wiki.site(requestSite).getDirectURL('assets')
   if assetsURL is ''
@@ -24,7 +95,16 @@ fetch = ($report, assets, remote) ->
     return
 
   link = (file) ->
-    """<a href="#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}" target=_blank>#{expand file}</a>"""
+    href = "#{assetsURL}/#{if assets is '' then "" else assets + "/"}#{encodeURIComponent file}"
+    # todo: no action if not logged on
+    act = unless isOwner
+      ''
+    else if remote != location.host
+      '<button class="copy">⚑</button> '
+    else
+      '<button class="delete">✕</button> '
+    
+    """<span>#{act}<a href="#{href}" target=_blank>#{expand file}</a></span>"""
 
   render = (data) ->
     if data.error
@@ -34,6 +114,15 @@ fetch = ($report, assets, remote) ->
     if files.length == 0
       return $report.text "no files"
     $report.html (link file for file in files).join "<br>"
+
+    $report.find('button.copy').click (e) ->
+      href = $(e.target).parent().find('a').attr('href')
+      get_file $item, item, href, (form) ->
+        post_upload $item, item, form
+
+    $report.find('button.delete').click (e) ->
+      href = $(e.target).parent().find('a').attr('href')
+      delete_file $item, item, href
 
   trouble = (e) ->
     $report.text "plugin error: #{e.statusText} #{e.responseText||''}"
@@ -50,7 +139,7 @@ emit = ($item, item) ->
     return '' if $item.parents('.page').hasClass 'remote'
     """
       <div style="background-color:#ddd;" class="progress-bar" role="progressbar"></div>
-      <center><button>upload</button></center>
+      <center><button class="upload">upload</button></center>
       <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
     """
 
@@ -67,7 +156,7 @@ emit = ($item, item) ->
       <dt><img width=12 src="#{wiki.site(site).flag()}"> #{site}</dt>
       <dd style="margin:8px;"></dd>
     """
-    fetch $report.find('dd:first'), assets, site
+    fetch_list $item, item, $report.find('dd:first'), assets, site
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
@@ -75,20 +164,8 @@ bind = ($item, item) ->
   $item.dblclick -> wiki.textEditor $item, item
 
   # https://coligo.io/building-ajax-file-uploader-with-node/
-  $button = $item.find 'button'
+  $button = $item.find '.upload'
   $input = $item.find 'input'
-  $progress = $item.find '.progress-bar'
-
-  ignore = (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-
-  tick = (e) ->
-    return unless e.lengthComputable
-    percentComplete = e.loaded / e.total
-    percentComplete = parseInt(percentComplete * 100)
-    $progress.text "#{percentComplete}%"
-    $progress.width "#{percentComplete}%"
 
   $button.click (e) ->
     $input.click()
@@ -108,25 +185,7 @@ bind = ($item, item) ->
     form.append 'assets', assets
     for file in files
       form.append 'uploads[]', file, file.name
-
-    $.ajax
-      url: '/plugin/assets/upload'
-      type: 'POST'
-      data: form
-      processData: false
-      contentType: false
-      success: ->
-        $item.empty()
-        emit $item, item
-        bind $item, item
-      error: (e) ->
-        console.log 'error', e
-        $progress.text "upload error: #{e.statusText} #{e.responseText||''}"
-        $progress.width '100%'
-      xhr: ->
-        xhr = new XMLHttpRequest
-        xhr.upload.addEventListener 'progress', tick, false
-        xhr
+    post_upload $item,item,form
 
 window.plugins.assets = {emit, bind} if window?
 module.exports = {expand} if module?
