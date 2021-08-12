@@ -111,7 +111,8 @@ fetch_list = ($item, item, $report, assets, remote, assetsData) ->
       return $report.text "no files" if data.error.code == 'ENOENT'
       return $report.text "plugin reports: #{data.error.code}"
     files = data.files
-    assetsData[assets]=files
+    assetsData[assets] ||= {}
+    assetsData[assets][assetsURL] = files
 
     if files.length == 0
       return $report.text "no files"
