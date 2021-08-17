@@ -87,7 +87,7 @@ delete_file = ($item, item, url) ->
       $progress.text "Delete error: #{e.statusText} #{e.responseText||''}"
       $progress.width '100%'
 
-fetch_list = ($item, item, $report, assets, remote) ->
+fetch_list = ($item, item, $report, assets, remote, assetsData) ->
   requestSite = if remote? then remote else null
   assetsURL = wiki.site(requestSite).getDirectURL('assets')
   if assetsURL is ''
@@ -111,6 +111,9 @@ fetch_list = ($item, item, $report, assets, remote) ->
       return $report.text "no files" if data.error.code == 'ENOENT'
       return $report.text "plugin reports: #{data.error.code}"
     files = data.files
+    assetsData[assets] ||= {}
+    assetsData[assets][assetsURL] = files
+
     if files.length == 0
       return $report.text "no files"
     $report.html (link file for file in files).join "<br>"
@@ -150,13 +153,18 @@ emit = ($item, item) ->
     </div>
   """
 
+  assetsData = {}
+  $item.addClass 'assets-source'
+  $item.get(0).assetsData = -> assetsData
+
   assets = item.text.match(/([\w\/-]*)/)[1]
   for site in context $item
     $report = $item.find('dl').prepend """
       <dt><img width=12 src="#{wiki.site(site).flag()}"> #{site}</dt>
       <dd style="margin:8px;"></dd>
     """
-    fetch_list $item, item, $report.find('dd:first'), assets, site
+    fetch_list $item, item, $report.find('dd:first'), assets, site, assetsData
+
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]

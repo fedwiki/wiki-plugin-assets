@@ -1,0 +1,24 @@
+<pre id=result></pre>
+
+<script type=module>
+
+  let assetsData = await sources('assets')
+  window.result.innerHTML = JSON.stringify(assetsData,null,2)
+
+  // U T I L I T I E S
+
+  function sources(topic) {
+    const action = 'requestSourceData'
+    return new Promise(resolve => {
+      let handler = event => {
+        let {data} = event
+        if (!data.action == action) return
+        window.removeEventListener('message',handler)
+        resolve(data.sources)
+      }
+      window.addEventListener('message',handler)
+      window.parent.postMessage({action, topic},"*")
+    })
+  }
+
+</script>
