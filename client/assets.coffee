@@ -107,11 +107,11 @@ fetch_list = ($item, item, $report, assets, remote, assetsData) ->
     """<span>#{act}<a href="#{href}" target=_blank>#{expand file}</a></span>"""
 
   render = (data) ->
+    assetsData[assets] ||= {}
     if data.error
       return $report.text "no files" if data.error.code == 'ENOENT'
       return $report.text "plugin reports: #{data.error.code}"
     files = data.files
-    assetsData[assets] ||= {}
     assetsData[assets][assetsURL] = files
 
     if files.length == 0
