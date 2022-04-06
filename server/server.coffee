@@ -30,7 +30,7 @@ startServer = (params) ->
 
   app.post '/plugin/assets/upload', (req, res) ->
     return res.status(401).send("must login") unless req.session?.passport?.user || req.session?.email || req.session?.friend
-
+    return res.status(401).send("must be owner") unless app.securityhandler.isAuthorized(req)
     form = new (formidable.IncomingForm)
     form.multiples = true
     form.uploadDir = "#{argv.assets}"
