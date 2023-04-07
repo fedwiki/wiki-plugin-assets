@@ -118,12 +118,12 @@ fetch_list = ($item, item, $report, assets, remote, assetsData) ->
       return $report.text "no files"
     $report.html (link file for file in files).join "<br>"
 
-    $report.find('button.copy').click (e) ->
+    $report.find('button.copy').on 'click', (e) ->
       href = $(e.target).parent().find('a').attr('href')
       get_file $item, item, href, (form) ->
         post_upload $item, item, form
 
-    $report.find('button.delete').click (e) ->
+    $report.find('button.delete').on 'click', (e) ->
       href = $(e.target).parent().find('a').attr('href')
       delete_file $item, item, href
 
@@ -169,13 +169,13 @@ emit = ($item, item) ->
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
 
-  $item.dblclick -> wiki.textEditor $item, item
+  $item.on 'dblclick', () -> wiki.textEditor $item, item
 
   # https://coligo.io/building-ajax-file-uploader-with-node/
   $button = $item.find '.upload'
   $input = $item.find 'input'
 
-  $button.click (e) ->
+  $button.on 'click', (e) ->
     $input.click()
 
   $input.on 'change', (e) ->
