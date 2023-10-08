@@ -28,6 +28,17 @@ startServer = (params) ->
       async.filter names, isFile, (error, files) ->
         return res.json {error, files}
 
+  app.get '/plugin/assets/index', cors, (req, res) ->
+    walk = (root) ->
+      fs.readdirSync("#{argv.assets}/#{root}").flatMap (name) ->
+        path = "#{root}/#{name}"
+        stat = fs.statSync("#{argv.assets}/#{path}")
+        if stat.isDirectory()
+          return walk(path)
+        else
+          return {file:path,size:stat.size}
+    return res.json(walk(""))
+
   app.post '/plugin/assets/upload', (req, res) ->
     return res.status(401).send("must be logged in owner") unless app.securityhandler.isAuthorized(req)
     form = new (formidable.IncomingForm)
