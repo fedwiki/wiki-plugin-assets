@@ -38,6 +38,7 @@ post_upload = ($item, item, form) ->
     contentType: false
     success: ->
       $item.empty()
+      $item.off()
       emit $item, item
       bind $item, item
     error: (e) ->
@@ -80,6 +81,7 @@ delete_file = ($item, item, url) ->
     type: 'POST'
     success: () ->
       $item.empty()
+      $item.off()
       emit $item, item
       bind $item, item
     error: (e) ->
