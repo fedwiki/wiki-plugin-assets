@@ -35,12 +35,25 @@ const startServer = (params) => {
     }) 
   })
 
+  app.get('/plugin/assets/index', cors, (req, res) => {
+    return res.json(fs.readdirSync(argv.assets, { recursive: true })
+      .map((entry) => {
+        const stat = fs.statSync(path.join(argv.assets, entry))
+        if (stat.isFile()) {
+          return { file: "/" + entry, size: stat.size }
+        } else {
+          return []
+        }
+      })
+      .flat()
+    )
+  })
+
   app.post('/plugin/assets/upload', authorized, upload.any(), (req, res) => {
     const assetPath = path.join(argv.assets, (req.body.assets || '').match(/([\w\/-]*)/)[1])
     fs.mkdirSync(assetPath, { recursive: true })
     let errors = []
     req.files.forEach(((element) => {
-      console.log('+++ forEach: ', element)
       const uploaded = element.path
       const assetDestination = path.join(assetsPath, element.originalname)
       fs.rename(uploaded, assetDestination, (err) => {
