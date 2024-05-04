@@ -36,17 +36,25 @@ const startServer = (params) => {
   })
 
   app.get('/plugin/assets/index', cors, (req, res) => {
-    return res.json(fs.readdirSync(argv.assets, { recursive: true })
-      .map((entry) => {
-        const stat = fs.statSync(path.join(argv.assets, entry))
-        if (stat.isFile()) {
-          return { file: "/" + entry, size: stat.size }
+
+    const walk = (dir) => {
+      const files = fs.readdirSync(path.join(argv.assets, dir), {withFileTypes: true})
+      return files.map((file) => {
+        if (!file.name.startsWith('.')) {
+          if (file.isFile()) {
+            return { file: path.join(path.sep, dir, file.name), size: fs.statSync(path.join(argv.assets, dir, file.name)).size }
+          }
+          if (file.isDirectory()) {
+            return walk(path.join(dir, file.name)).flat()
+          }
+          return []
         } else {
           return []
         }
-      })
-      .flat()
-    )
+      }).flat()
+    }
+    
+    return res.json(walk(''))
   })
 
   app.post('/plugin/assets/upload', authorized, upload.any(), (req, res) => {
