@@ -53,7 +53,7 @@ const startServer = (params) => {
         }
       }).flat()
     }
-    
+
     return res.json(walk(''))
   })
 
@@ -73,7 +73,7 @@ const startServer = (params) => {
     if (errors.length > 0) {
       res.status(500).send(errors.join('\n'))
     } else {
-      res.end('sucess')
+      res.end('success')
     }
   })
 
