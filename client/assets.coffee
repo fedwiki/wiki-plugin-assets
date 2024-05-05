@@ -160,7 +160,7 @@ emit = ($item, item) ->
     if $item.parents('.page')[0].id.endsWith('template')
       $item.append """
         <div style="background-color:#eee;padding:15px; margin-block-start:1em; margin-block-end:1em;">
-          <p><i>Any pages created from this template will use a folder with their name for assets.</i></p>
+          <p><i>This asset item will use a folder name derived from the title of the created page.</i></p>
         </div>
       """
       return
