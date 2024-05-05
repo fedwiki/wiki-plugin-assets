@@ -52,7 +52,7 @@ post_upload = ($item, item, form) ->
 get_file = ($item, item, url, success) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
   if assets is 'PAGE'
-    assets = "/pages/" + $item.parents('.page')[0].id
+    assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
   filename = url.split('/').reverse()[0]
   fetch(url).then((response) ->
     response.blob()
@@ -78,7 +78,7 @@ delete_file = ($item, item, url) ->
   file = url.split('/').reverse()[0]
   assets = item.text.match(/([\w\/-]*)/)[1]
   if assets is 'PAGE'
-    assets = "/pages/" + $item.parents('.page')[0].id
+    assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
   $.ajax
     url: "/plugin/assets/delete?file=#{file}&assets=#{assets}"
     type: 'POST'
@@ -165,7 +165,7 @@ emit = ($item, item) ->
       """
       return
     else
-      assets = "/pages/" + $item.parents('.page')[0].id
+      assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
 
   $item.append """
     <div style="background-color:#eee;padding:15px; margin-block-start:1em; margin-block-end:1em;">
@@ -185,7 +185,7 @@ emit = ($item, item) ->
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
   if assets is 'PAGE'
-    assets = "/pages/" + $item.parents('.page')[0].id
+    assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
 
   $item.on 'dblclick', () -> wiki.textEditor $item, item
 
