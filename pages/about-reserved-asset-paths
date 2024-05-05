@@ -27,6 +27,16 @@
       "text": "pages/about-reserved-asset-paths"
     },
     {
+      "type": "paragraph",
+      "id": "931542d4e988af63",
+      "text": "Use the markup keyword PAGE to apply this convention automatically. This is especially handy when authoring templates where each templated page will have its own assets folder."
+    },
+    {
+      "type": "code",
+      "id": "8a8a79f1dc89ce1f",
+      "text": "PAGE"
+    },
+    {
       "type": "markdown",
       "id": "10266fc136b331bb",
       "text": "# Reservations"
@@ -255,6 +265,56 @@
         "text": "# Reservations"
       },
       "date": 1516582889415
+    },
+    {
+      "type": "add",
+      "id": "931542d4e988af63",
+      "item": {
+        "type": "paragraph",
+        "id": "931542d4e988af63",
+        "text": "Use the markup keyword PAGE to apply this convention automatically. This is especially handy when authoring templates where each templated page will have its own assets folder."
+      },
+      "after": "63fc43d7d4d54da1",
+      "date": 1714918632747
+    },
+    {
+      "id": "931542d4e988af63",
+      "type": "move",
+      "order": [
+        "17bdf2c74f130bc7",
+        "11d1d01f26ea7e9c",
+        "82563d09c84d9145",
+        "63fc43d7d4d54da1",
+        "39e7dbc08290fba7",
+        "931542d4e988af63",
+        "10266fc136b331bb",
+        "c929d6f28fb4c3cc",
+        "225c4a490cbeca08",
+        "f6b4bc6f53c92312",
+        "c93a5928308bf9c7"
+      ],
+      "date": 1714918638162
+    },
+    {
+      "type": "add",
+      "id": "8a8a79f1dc89ce1f",
+      "item": {
+        "type": "factory",
+        "id": "8a8a79f1dc89ce1f",
+        "text": "PAGE "
+      },
+      "after": "931542d4e988af63",
+      "date": 1714918676379
+    },
+    {
+      "type": "edit",
+      "id": "8a8a79f1dc89ce1f",
+      "item": {
+        "type": "code",
+        "id": "8a8a79f1dc89ce1f",
+        "text": "PAGE"
+      },
+      "date": 1714918681394
     }
   ]
 }
