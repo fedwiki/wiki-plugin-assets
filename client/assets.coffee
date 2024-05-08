@@ -52,6 +52,8 @@ post_upload = ($item, item, form) ->
 
 get_file = ($item, item, url, success) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
+  if assets is 'PAGE'
+    assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
   filename = url.split('/').reverse()[0]
   fetch(url).then((response) ->
     response.blob()
@@ -75,7 +77,9 @@ get_file = ($item, item, url, success) ->
 
 delete_file = ($item, item, url) ->
   file = url.split('/').reverse()[0]
-  assets = item.text
+  assets = item.text.match(/([\w\/-]*)/)[1]
+  if assets is 'PAGE'
+    assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
   $.ajax
     url: "/plugin/assets/delete?file=#{file}&assets=#{assets}"
     type: 'POST'
@@ -148,6 +152,23 @@ emit = ($item, item) ->
       <input style="display: none;" type="file" name="uploads[]" multiple="multiple">
     """
 
+  assetsData = {}
+  $item.addClass 'assets-source'
+  $item.get(0).assetsData = -> assetsData
+
+  assets = item.text.match(/([\w\/-]*)/)[1]
+
+  if assets is 'PAGE'
+    if $item.parents('.page')[0].id.endsWith('template')
+      $item.append """
+        <div style="background-color:#eee;padding:15px; margin-block-start:1em; margin-block-end:1em;">
+          <p><i>This asset item will use a folder name derived from the title of the created page.</i></p>
+        </div>
+      """
+      return
+    else
+      assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
+
   $item.append """
     <div style="background-color:#eee;padding:15px; margin-block-start:1em; margin-block-end:1em;">
       <dl style="margin:0;color:gray"></dl>
@@ -155,11 +176,6 @@ emit = ($item, item) ->
     </div>
   """
 
-  assetsData = {}
-  $item.addClass 'assets-source'
-  $item.get(0).assetsData = -> assetsData
-
-  assets = item.text.match(/([\w\/-]*)/)[1]
   for site in context $item
     $report = $item.find('dl').prepend """
       <dt><img width=12 src="#{wiki.site(site).flag()}"> #{site}</dt>
@@ -170,6 +186,8 @@ emit = ($item, item) ->
 
 bind = ($item, item) ->
   assets = item.text.match(/([\w\/-]*)/)[1]
+  if assets is 'PAGE'
+    assets = "/pages/" + $item.parents('.page')[0].id.split('_rev')[0]
 
   $item.on 'dblclick', () -> wiki.textEditor $item, item
 
