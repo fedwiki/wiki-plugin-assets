@@ -18,15 +18,15 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2",
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
     "expect.js": "^0.3.1",
-    "grunt": "^1.0.4",
+    "grunt": "^1.6.1",
     "grunt-contrib-coffee": "^2.1.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-git-authors": "^3.2.0",
-    "grunt-mocha-test": "^0.13.2",
-    "mocha": "^10.1.0"
+    "grunt-mocha-test": "^0.13.3",
+    "mocha": "^10.4.0"
   },
   "license": "MIT",
   "repository": {
@@ -37,7 +37,7 @@
     "url": "https://github.com/fedwiki/wiki-plugin-assets/issues"
   },
   "engines": {
-    "node": ">=0.10"
+    "node": ">=0.20"
   },
   "dependencies": {
     "multer": "^1.4.5-lts.1"
