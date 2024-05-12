@@ -25,7 +25,7 @@ const startServer = (params) => {
   }
 
   app.get('/plugin/assets/list', cors, (req, res) => {
-    assetsPath = path.join(argv.assets, (req.query.assets || '').match(/([\w\/-]*)/)[1])
+    const assetsPath = path.join(argv.assets, (req.query.assets || '').match(/([\w\/-]*)/)[1])
     fs.readdir(assetsPath, { withFileTypes: true }, (error, files) => {
       if (error) {
         return res.json({ error })
@@ -58,8 +58,8 @@ const startServer = (params) => {
   })
 
   app.post('/plugin/assets/upload', authorized, upload.any(), (req, res) => {
-    const assetPath = path.join(argv.assets, (req.body.assets || '').match(/([\w\/-]*)/)[1])
-    fs.mkdirSync(assetPath, { recursive: true })
+    const assetsPath = path.join(argv.assets, (req.body.assets || '').match(/([\w\/-]*)/)[1])
+    fs.mkdirSync(assetsPath, { recursive: true })
     let errors = []
     req.files.forEach(((element) => {
       const uploaded = element.path
@@ -81,7 +81,7 @@ const startServer = (params) => {
     const file = path.basename(req.query.file || '')
     if (file) {
       const assets = (req.query.assets || '').match(/([\w\/-]*)/)[1]
-      toRemove = path.join(argv.assets, assets, file)
+      const toRemove = path.join(argv.assets, assets, file)
       fs.unlink(toRemove, (err) => {
         if (err) {
           res.status(500).send(err.message)
