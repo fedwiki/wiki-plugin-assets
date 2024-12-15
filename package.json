@@ -13,8 +13,19 @@
     "email": "ward@c2.com",
     "url": "http://ward.asia.wiki.org"
   },
-  "contributors": [],
+  "contributors": [
+    "Ward Cunningham <ward@c2.com>",
+    "Nick Niemeir <nick.niemeir@gmail.com>",
+    "Marcin Cieslak <saper@saper.info>",
+    "Paul Rodwell <paul.rodwell@btinternet.com>"
+  ],
   "scripts": {
+    "build": "mocha; npm run build:client; npm run build:server",
+    "build:client": "npm run clean:client; node --no-warnings scripts/build-client.js",
+    "build:server": "npm run clean:server; node --no-warnings scripts/build-server.js",
+    "clean": "npm run clean:client; npm run clean:server",
+    "clean:client": "rm client/assets.js client/assets.js.map",
+    "clean:server": "rm server/server.js server/server.js.map",
     "test": "mocha"
   },
   "devDependencies": {

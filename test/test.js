@@ -1,6 +1,6 @@
 // see http://mochajs.org/
 
-import { assets } from '../client/assets.js'
+import { assets } from '../src/client/assets.js'
 import expect from 'expect.js'
 
 describe('assets plugin', () => {

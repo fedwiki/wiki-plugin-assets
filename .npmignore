@@ -1,4 +1,5 @@
-srcipts
+scripts
+src
 test
 
 eslint.config.js
