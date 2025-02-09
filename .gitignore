@@ -1,6 +1,8 @@
-/client/*.js
-/*/*.map
+client/*.js
+client/*.js.map
+server/*.js
+server/*.js.map
 node_modules
 npm-debug.log
 status
-.DS_Store
+meta-*.json

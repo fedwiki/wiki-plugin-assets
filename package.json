@@ -1,6 +1,6 @@
 {
   "name": "wiki-plugin-assets",
-  "version": "0.5.1",
+  "version": "0.6.0-rc.0",
   "description": "Federated Wiki - Assets Plugin",
   "keywords": [
     "assets",
@@ -13,20 +13,29 @@
     "email": "ward@c2.com",
     "url": "http://ward.asia.wiki.org"
   },
-  "contributors": [],
+  "contributors": [
+    "Ward Cunningham <ward@c2.com>",
+    "Nick Niemeir <nick.niemeir@gmail.com>",
+    "Marcin Cieslak <saper@saper.info>",
+    "Paul Rodwell <paul.rodwell@btinternet.com>"
+  ],
   "scripts": {
+    "build": "mocha; npm run build:client; npm run build:server",
+    "build:client": "npm run clean:client; node --no-warnings scripts/build-client.js",
+    "build:server": "npm run clean:server; node --no-warnings scripts/build-server.js",
+    "clean": "npm run clean:client; npm run clean:server",
+    "clean:client": "rm client/assets.js client/assets.js.map",
+    "clean:server": "rm server/server.js server/server.js.map",
     "test": "mocha"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
     "expect.js": "^0.3.1",
-    "grunt": "^1.6.1",
-    "grunt-contrib-coffee": "^2.1.0",
-    "grunt-contrib-watch": "^1.1.0",
+    "globals": "^15.13.0",
     "grunt-git-authors": "^3.2.0",
-    "grunt-mocha-test": "^0.13.3",
-    "mocha": "^10.4.0"
+    "mocha": "^10.4.0",
+    "prettier": "^3.4.2"
   },
   "license": "MIT",
   "repository": {
@@ -36,8 +45,9 @@
   "bugs": {
     "url": "https://github.com/fedwiki/wiki-plugin-assets/issues"
   },
+  "type": "module",
   "engines": {
-    "node": ">=0.20"
+    "node": ">=18"
   },
   "dependencies": {
     "multer": "^1.4.5-lts.1"

@@ -1,17 +1,13 @@
-"use strict";
+// see http://mochajs.org/
 
-(function () {
-  // build time tests for assets plugin
-  // see http://mochajs.org/
-  var assets, expect;
-  assets = require('../client/assets');
-  expect = require('expect.js');
-  describe('assets plugin', function () {
-    return describe('expand', function () {});
-  });
+import { assets } from '../src/client/assets.js'
+import expect from 'expect.js'
 
-  // it 'can make itallic', ->
-  //   result = assets.expand 'hello *world*'
-  //   expect(result).to.be 'hello <i>world</i>'
-}).call(void 0);
-//# sourceMappingURL=test.js.map
+describe('assets plugin', () => {
+  describe('expand', () => {
+    it('can escape html markup characters', () => {
+      const result = assets.expand('try < & >')
+      expect(result).to.be('try &lt; &amp; &gt;')
+    })
+  })
+})
