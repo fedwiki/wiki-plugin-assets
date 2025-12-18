@@ -26,7 +26,7 @@
     "clean": "npm run clean:client; npm run clean:server",
     "clean:client": "rm client/assets.js client/assets.js.map",
     "clean:server": "rm server/server.js server/server.js.map",
-    "test": "mocha"
+    "test": "node --test"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
@@ -35,7 +35,6 @@
     "expect.js": "^0.3.1",
     "globals": "^16.1.0",
     "grunt-git-authors": "^3.2.0",
-    "mocha": "^11.4.0",
     "prettier": "^3.5.3"
   },
   "license": "MIT",
