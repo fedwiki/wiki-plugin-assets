@@ -20,7 +20,7 @@
     "Paul Rodwell <paul.rodwell@btinternet.com>"
   ],
   "scripts": {
-    "build": "mocha; npm run build:client; npm run build:server",
+    "build": "npm run test; npm run build:client; npm run build:server",
     "build:client": "npm run clean:client; node --no-warnings scripts/build-client.js",
     "build:server": "npm run clean:server; node --no-warnings scripts/build-server.js",
     "clean": "npm run clean:client; npm run clean:server",
@@ -29,9 +29,9 @@
     "test": "node --test"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "esbuild": "^0.27.2",
-    "eslint": "^9.39.2",
+    "@eslint/js": "^10.0.1",
+    "esbuild": "^0.27.3",
+    "eslint": "^10.0.0",
     "expect.js": "^0.3.1",
     "globals": "^17.3.0",
     "grunt-git-authors": "^3.2.0",
@@ -47,7 +47,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "dependencies": {
     "multer": "^2.0.2"
