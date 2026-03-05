@@ -31,9 +31,9 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "esbuild": "^0.27.3",
-    "eslint": "^10.0.0",
+    "eslint": "^10.0.2",
     "expect.js": "^0.3.1",
-    "globals": "^17.3.0",
+    "globals": "^17.4.0",
     "grunt-git-authors": "^3.2.0",
     "prettier": "^3.8.1"
   },
@@ -50,6 +50,6 @@
     "node": ">=22"
   },
   "dependencies": {
-    "multer": "^2.0.2"
+    "multer": "^2.1.1"
   }
 }
