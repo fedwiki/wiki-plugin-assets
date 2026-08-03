@@ -66,7 +66,7 @@ const startServer = params => {
     let errors = []
     req.files.forEach(element => {
       const uploaded = element.path
-      const assetDestination = path.join(assetsPath, element.originalname)
+      const assetDestination = path.join(assetsPath, path.basename(element.originalname))
       fs.rename(uploaded, assetDestination, err => {
         if (err) {
           errors.push(`rename failed for ${element.originalname}`)
