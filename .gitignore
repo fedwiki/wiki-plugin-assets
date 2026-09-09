@@ -5,4 +5,5 @@ server/*.js.map
 node_modules
 npm-debug.log
 status
+cve-report
 meta-*.json
